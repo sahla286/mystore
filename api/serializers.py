@@ -5,4 +5,4 @@ class ProductSerializer(serializers.Serializer):
     price=serializers.IntegerField()
     description=serializers.CharField()
     category=serializers.CharField()
-    # image=serializers.ImageField()
+    image=serializers.ImageField(read_only=True)
