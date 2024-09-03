@@ -23,11 +23,26 @@ class ProductView(APIView):
     
 class ProductDetailsView(APIView):
     def get(self,request,*args,**kw):
-        return Response(data='detail of a product')
+        id = kw.get('id')
+        qs=Products.objects.get(id=id)
+        serializer = ProductSerializer(qs)
+        return Response(data=serializer.data)
+    
     def put(self,request,*args,**kw):
-        return Response(data='Item sucessesfully updated')
+        id = kw.get('id')
+        serializer = ProductSerializer(data=request.data)
+        if serializer.is_valid():
+            id = kw.get('id')
+            Products.objects.filter(id=id).update(**request.data)
+            return Response(data=serializer.data)
+        else:
+            return Response(data=serializer._errors)
+    
     def delete(self,request,*args,**kw):
-        return Response(data='Item delete')
+        id = kw.get('id')
+        Products.objects.filter(id=id).delete()
+        return Response(data='Item deleted')
+
 
 # seralizers(serialization)
 
