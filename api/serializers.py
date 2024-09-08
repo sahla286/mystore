@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from api.models import Products
+from django.contrib.auth.models import User
 
 class ProductSerializer(serializers.Serializer):
     id=serializers.IntegerField(read_only=True)
@@ -15,5 +16,9 @@ class ProductModelSerializer(serializers.ModelSerializer):
         fields='__all__'
         # fields=['name','price'] (not serialize all fields)
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model=User
+        fields=['username','first_name','last_name','email','password']
         
 # read_only -> work any one(serialize / deserialisation)

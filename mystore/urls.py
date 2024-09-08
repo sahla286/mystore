@@ -21,6 +21,7 @@ from rest_framework.routers import DefaultRouter # generate urls by default(regi
 
 router=DefaultRouter()
 router.register('api/products',views.ProductViewsetView,basename='products')
+router.register('api/users',views.UserViewsetView,basename='users')
 
 
 urlpatterns = [
