@@ -2,13 +2,13 @@ from rest_framework import serializers
 from api.models import Products
 from django.contrib.auth.models import User
 
-class ProductSerializer(serializers.Serializer):
-    id=serializers.IntegerField(read_only=True)
-    name=serializers.CharField()
-    price=serializers.IntegerField()
-    description=serializers.CharField()
-    category=serializers.CharField()
-    image=serializers.ImageField(required=False,default=None)
+# class ProductSerializer(serializers.Serializer):
+#     id=serializers.IntegerField(read_only=True)
+#     name=serializers.CharField()
+#     price=serializers.IntegerField()
+#     description=serializers.CharField()
+#     category=serializers.CharField()
+#     image=serializers.ImageField(required=False,default=None)
 
 class ProductModelSerializer(serializers.ModelSerializer):
     class Meta:

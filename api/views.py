@@ -3,15 +3,20 @@ from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet,ModelViewSet
 from rest_framework.response import Response
 from api.models import Products
-from api.serializers import ProductSerializer,ProductModelSerializer,UserSerializer
+from api.serializers import ProductModelSerializer,UserSerializer
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
+from rest_framework.authentication import BasicAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 # Create your views here.
 
 class ProductViewsetView(ModelViewSet):
     serializer_class=ProductModelSerializer
     queryset=Products.objects.all()
+    authentication_classes =[BasicAuthentication]
+    permission_classes =[IsAuthenticated]
+
     # custom method
     @action(methods=['GET'],detail=False)
     def categories(self,request,*args,**kw):
