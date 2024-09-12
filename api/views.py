@@ -2,8 +2,8 @@ from django.shortcuts import render
 from rest_framework.views import APIView
 from rest_framework.viewsets import ViewSet,ModelViewSet
 from rest_framework.response import Response
-from api.models import Products
-from api.serializers import ProductModelSerializer,UserSerializer
+from api.models import Products,Carts
+from api.serializers import ProductModelSerializer,UserSerializer,CartSerializer
 from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from rest_framework.authentication import BasicAuthentication
@@ -26,6 +26,11 @@ class ProductViewsetView(ModelViewSet):
 class UserViewsetView(ModelViewSet):
     serializer_class=UserSerializer
     queryset=User.objects.all()
+
+# class CartView(ModelViewSet):
+#     serializer_class=CartSerializer
+#     queryset=Carts.objects.all()
+
 
 
 # class ProductView(APIView):
