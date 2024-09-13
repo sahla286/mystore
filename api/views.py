@@ -22,10 +22,30 @@ class ProductViewsetView(ModelViewSet):
     def categories(self,request,*args,**kw):
         qs=Products.objects.values_list('category',flat=True).distinct()
         return Response(data=qs)
+    
+    @action(methods=['POST'],detail=True)
+    def add_cart(self,request,*args,**kw):
+        id = kw.get('pk')
+        user=request.user
+        item=Products.objects.get(id=id)
+        user.carts_set.create(product=item)
+        return Response(data='Item successfully added to cart')
+      
+# class CartView(APIView):
+#     authentication_classes =[BasicAuthentication]
+#     permission_classes =[IsAuthenticated]
+#     def post(self, request, *args, **kw):
+#         id = kw.get('id')
+#         user = request.user
+#         item = Products.objects.get(id=id) 
+#         Carts.objects.create(user=user, product=item)
+#         return Response(data='Item successfully added to cart')
+
 
 class UserViewsetView(ModelViewSet):
     serializer_class=UserSerializer
     queryset=User.objects.all()
+
 
 # class CartView(ModelViewSet):
 #     serializer_class=CartSerializer

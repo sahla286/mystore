@@ -11,6 +11,6 @@ router.register('api/users',views.UserViewsetView,basename='users')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    # path('products/',views.ProductView.as_view()),
+    # path('carts/<int:id>/',views.CartView.as_view()),
     # path('products/<int:id>/', views.ProductDetailsView.as_view()),
 ] + router.urls
