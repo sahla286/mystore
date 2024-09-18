@@ -160,7 +160,5 @@ class UserViewsetView(ModelViewSet):
 #         return Response(data=qs)
 
 
-
 # seralizers(serialization)
 
-# modelviewset :- 
