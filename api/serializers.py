@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from api.models import Products,Carts
+from api.models import Products,Carts,Reviews
 from django.contrib.auth.models import User
 
 # class ProductSerializer(serializers.Serializer):
@@ -33,6 +33,15 @@ class CartSerializer(serializers.ModelSerializer):
 
     class Meta:
         model=Carts
+        fields='__all__'
+
+class ReviewSerializer(serializers.ModelSerializer):
+    user=serializers.CharField(read_only=True) 
+    product=serializers.CharField(read_only=True) 
+    date=serializers.CharField(read_only=True)
+
+    class Meta:
+        model=Reviews
         fields='__all__'
     
 # read_only -> work any one(serialize / deserialisation)
