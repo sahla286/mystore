@@ -16,13 +16,13 @@ class Products(models.Model):
         return self.name
     
 class Carts(models.Model):
-    user =models.ForeignKey(User,on_delete=models.CASCADE)
+    user =models.ForeignKey(User,on_delete=models.CASCADE) 
     product=models.ForeignKey(Products,on_delete=models.CASCADE)
     date=models.DateTimeField(auto_now_add=True)
 
 class Reviews(models.Model):
     user =models.ForeignKey(User,on_delete=models.CASCADE)
-    product=models.ForeignKey(Products,on_delete=models.CASCADE)
+    product=models.ForeignKey(Products,on_delete=models.CASCADE) 
     date=models.DateTimeField(auto_now_add=True)
     rating=models.PositiveIntegerField(validators=[MinValueValidator(1),MaxValueValidator(5)])
     comment=models.CharField(max_length=255)

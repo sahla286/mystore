@@ -8,6 +8,7 @@ from rest_framework.decorators import action
 from django.contrib.auth.models import User
 from rest_framework.authentication import BasicAuthentication
 from rest_framework.permissions import IsAuthenticated
+from rest_framework import status
 
 # Create your views here.
 
@@ -31,6 +32,15 @@ class ProductViewsetView(ModelViewSet):
         user.carts_set.create(product=item)
         return Response(data='Item successfully added to cart')
       
+    # @action(methods=['GET'], detail=True)
+    # def retrieve_cart(self, request, *args, **kw):
+    #     user = request.user
+    #     id = kw.get('pk')
+    #     product = Products.objects.get(id=id)
+    #     cart_item=user.carts_set.filter(product=product).first()
+    #     return Response(data=cart_item)
+
+    
 # class CartView(APIView):
 #     authentication_classes =[BasicAuthentication]
 #     permission_classes =[IsAuthenticated]
@@ -40,6 +50,18 @@ class ProductViewsetView(ModelViewSet):
 #         item = Products.objects.get(id=id) 
 #         Carts.objects.create(user=user, product=item)
 #         return Response(data='Item successfully added to cart')
+
+class CartView(ModelViewSet):
+    authentication_classes=[BasicAuthentication]
+    permission_classes=[IsAuthenticated]
+    queryset=Carts.objects.all()
+    serializer_class=CartSerializer
+    def list(self, request, *args, **kwargs):
+        user=request.user
+        print(user)
+        carts=self.queryset.filter(user=user)
+        ser=self.serializer_class(carts,many=True)
+        return Response(data=ser.data,status=status.HTTP_200_OK)
 
 
 class UserViewsetView(ModelViewSet):
