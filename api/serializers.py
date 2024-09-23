@@ -11,6 +11,8 @@ from django.contrib.auth.models import User
 #     image=serializers.ImageField(required=False,default=None)
 
 class ProductModelSerializer(serializers.ModelSerializer):
+    avg_rating=serializers.CharField(read_only=True)
+    review_count=serializers.CharField(read_only=True)
     class Meta:
         model=Products
         fields='__all__'

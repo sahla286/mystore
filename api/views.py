@@ -11,6 +11,9 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 
 # Create your views here.
+class UserViewsetView(ModelViewSet):
+    serializer_class=UserSerializer
+    queryset=User.objects.all()
 
 class ProductViewsetView(ModelViewSet):
     serializer_class=ProductModelSerializer
@@ -42,27 +45,6 @@ class ProductViewsetView(ModelViewSet):
             ser.save(product=product,user=user)
             return Response(data=ser.data,status=status.HTTP_201_CREATED)
         return Response(data=ser.errors,status=status.HTTP_400_BAD_REQUEST)
-    
-
-      
-    # @action(methods=['GET'], detail=True)
-    # def retrieve_cart(self, request, *args, **kw):
-    #     user = request.user
-    #     id = kw.get('pk')
-    #     product = Products.objects.get(id=id)
-    #     cart_item=user.carts_set.filter(product=product).first()
-    #     return Response(data=cart_item)
-
-    
-# class CartView(APIView):
-#     authentication_classes =[BasicAuthentication]
-#     permission_classes =[IsAuthenticated]
-#     def post(self, request, *args, **kw):
-#         id = kw.get('id')
-#         user = request.user
-#         item = Products.objects.get(id=id) 
-#         Carts.objects.create(user=user, product=item)
-#         return Response(data='Item successfully added to cart')
 
 class CartView(ModelViewSet):
     authentication_classes=[BasicAuthentication]
@@ -76,21 +58,30 @@ class CartView(ModelViewSet):
         ser=self.serializer_class(carts,many=True)
         return Response(data=ser.data,status=status.HTTP_200_OK)
 
-class ReviewView(ModelViewSet):
-    authentication_classes=[BasicAuthentication]
-    permission_classes=[IsAuthenticated]
-    queryset=Reviews.objects.all()
-    serializer_class=ReviewSerializer
-    def list(self, request, *args, **kwargs):
-        user=request.user
-        print(user)
-        reviews=self.queryset.filter(user=user)
-        ser=self.serializer_class(reviews,many=True)
-        return Response(data=ser.data,status=status.HTTP_200_OK)
 
-class UserViewsetView(ModelViewSet):
-    serializer_class=UserSerializer
-    queryset=User.objects.all()
+# class ReviewView(APIView):
+#     def delete(self,request,*args,**kw):
+#         id=kw.get('id')
+#         Reviews.objects.filter(id=id).delete()
+#         return Response(data={'msg':'review deleted'},status=status.HTTP_200_OK)
+
+class ReviewView(APIView):
+    def delete(self, request, *args, **kw):
+        id=kw.get('id')
+        review=Reviews.objects.filter(id=id).first()
+        if review:
+            review.delete()
+            return Response(data={'msg':'review deleted'},status=status.HTTP_200_OK)
+        else:
+            return Response(data={'msg':'review not found'},status=status.HTTP_404_NOT_FOUND)
+
+
+    
+# class ReviewView(ViewSet):
+#     def destroy(self,request,*args,**kw):
+#         id = kw.get('id')
+#         Reviews.objects.filter(id=id).delete() 
+#         return Response(data='Review deleted')
 
 # class ProductView(APIView):
 #     def get(self,request,*args,**kw):
@@ -198,6 +189,27 @@ class UserViewsetView(ModelViewSet):
 #         qs=Products.objects.values_list('category',flat=True).distinct()
 #         return Response(data=qs)
 
+# class CartView(APIView):
+#     authentication_classes =[BasicAuthentication]
+#     permission_classes =[IsAuthenticated]
+#     def post(self, request, *args, **kw):
+#         id = kw.get('id')
+#         user = request.user
+#         item = Products.objects.get(id=id) 
+#         Carts.objects.create(user=user, product=item)
+#         return Response(data='Item successfully added to cart')
+
+# class ReviewView(ModelViewSet):
+#     authentication_classes=[BasicAuthentication]
+#     permission_classes=[IsAuthenticated]
+#     queryset=Reviews.objects.all()
+#     serializer_class=ReviewSerializer
+#     def list(self, request, *args, **kwargs):
+#         user=request.user
+#         print(user)
+#         reviews=self.queryset.filter(user=user)
+#         ser=self.serializer_class(reviews,many=True)
+#         return Response(data=ser.data,status=status.HTTP_200_OK)
 
 # seralizers(serialization)
 

@@ -15,6 +15,34 @@ class Products(models.Model):
     def __str__(self) :
         return self.name
     
+    @property
+    # @property -> change this method to property equlant
+    def avg_rating(self):
+        rate=self.reviews_set.all().values_list('rating',flat=True)
+        # flat = True -> return value only not dict
+        if rate:
+            return sum(rate)/len(rate)
+        else:
+            return 0
+        
+    @property
+    def review_count(self):
+        count_review=self.reviews_set.count()
+        if count_review:
+            return count_review
+        else:
+            return 0
+        
+        # or
+        
+    # @property
+    # def review_count(self):
+    #     count_review=self.reviews_set.all()
+    #     if count_review:
+    #         return count_review.count()
+    #     else:
+    #         return 0
+    
 class Carts(models.Model):
     user =models.ForeignKey(User,on_delete=models.CASCADE) 
     product=models.ForeignKey(Products,on_delete=models.CASCADE)
