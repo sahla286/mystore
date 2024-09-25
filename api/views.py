@@ -45,7 +45,15 @@ class ProductViewsetView(ModelViewSet):
             ser.save(product=product,user=user)
             return Response(data=ser.data,status=status.HTTP_201_CREATED)
         return Response(data=ser.errors,status=status.HTTP_400_BAD_REQUEST)
-
+    
+    @action(methods=['POST'],detail=True)
+    def get_review(self,request,*args,**kw):
+        id=kw.get('pk')
+        product=self.queryset.get(id=id)
+        reviews=Reviews.objects.filter(product=product)
+        ser=ReviewSerializer(reviews,many=True)
+        return Response(data=ser.data,status=status.HTTP_200_OK)
+    
 class CartView(ModelViewSet):
     authentication_classes=[BasicAuthentication]
     permission_classes=[IsAuthenticated]
@@ -53,17 +61,9 @@ class CartView(ModelViewSet):
     serializer_class=CartSerializer
     def list(self, request, *args, **kwargs):
         user=request.user
-        print(user)
         carts=self.queryset.filter(user=user)
         ser=self.serializer_class(carts,many=True)
         return Response(data=ser.data,status=status.HTTP_200_OK)
-
-
-# class ReviewView(APIView):
-#     def delete(self,request,*args,**kw):
-#         id=kw.get('id')
-#         Reviews.objects.filter(id=id).delete()
-#         return Response(data={'msg':'review deleted'},status=status.HTTP_200_OK)
 
 class ReviewView(APIView):
     def delete(self, request, *args, **kw):
